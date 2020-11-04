@@ -1,6 +1,6 @@
-MaxLen = 0
-Words = []
-Test_Path = 'text/199801_sent.txt'
+MaxLen = 0  # 最大词长的全局变量
+Words = []  # 词典中所有单词的全局变量
+Sent_Path = 'text/199801_sent.txt'
 Dic_Path = 'text/dic.txt'
 FMM_Path = 'text/seg_FMM.txt'
 BMM_Path = 'text/seg_BMM.txt'
@@ -23,6 +23,97 @@ def init_dic():
         if len(word) > 11:
             print(word)
     print(MaxLen)
+    # 检查大于Maxlen的词长，先运行第一遍，发现词长大于11的词，然后手动在词典中删除词长大于11的词，而后再次运行
 
 
 init_dic()
+
+def pre_line(line):
+    punctuation = '-./'
+    buffer, result = '', ''
+    word_list = line.split('/ ')
+    word_list = word_list[:len(word_list) - 1]
+    for idx, word in enumerate(word_list):
+        if word.isascii() or word in punctuation:  # 若是字母、数字或者英文标点
+            buffer += word
+            if idx + 1 == len(word_list):
+                result += buffer + '/ '
+        else:
+            if buffer:
+                result += buffer + '/ '
+                buffer = ''
+            result += word + '/ '
+    return result
+
+
+class String_Match:
+    @staticmethod
+    def fmm():
+        init_dic()
+        segList = []
+        readfile = open(Sent_Path, 'r', encoding='gbk')
+        try:
+            lines = readfile.readlines()  # 读取Sent.txt
+        finally:
+            readfile.close()
+        writefile = open(FMM_Path, 'w', encoding='utf-8')
+        try:
+            for line in lines:
+                line = line[:len(line) - 1]  # 去掉每行最后的\n
+                while len(line) > 0:
+                    if len(line) < MaxLen:
+                        tryWord = line[0:len(line)]
+                    else:
+                        tryWord = line[0:MaxLen]
+                    while tryWord not in Words:
+                        # 若字串长度为1，跳出循环
+                        if len(tryWord) == 1:
+                            break
+                        # 截掉子串尾部一个字，用剩余部分到字典中匹配
+                        tryWord = tryWord[0:len(tryWord) - 1]
+                    # 将匹配成功的词加入到分词列表中
+                    segList.append(tryWord + '/ ')
+                    # 将匹配成功的词从待分词字符串中去除，继续循环，直到分词完成
+                    line = line[len(tryWord):]
+                segList.append('\n')
+            writefile.write(pre_line(''.join(segList)))
+        finally:
+            writefile.close()
+
+    @staticmethod
+    def bmm():
+        init_dic()
+        segList = []
+        readfile = open(Sent_Path, 'r', encoding='gbk')
+        try:
+            lines = readfile.readlines()  # 读取Sent.txt
+        finally:
+            readfile.close()
+        writefile = open(BMM_Path, 'w', encoding='utf-8')
+        try:
+            for line in lines:
+                line = line[:len(line) - 1]  # 去掉每行最后的\n
+                segList.append('\n')
+                while len(line) > 0:
+                    if len(line) < MaxLen:
+                        tryWord = line
+                    else:
+                        tryWord = line[len(line) - MaxLen:]
+                    while tryWord not in Words:
+                        # 若字串长度为1，跳出循环
+                        if len(tryWord) == 1:
+                            break
+                        # 截掉子串尾部一个字，用剩余部分到字典中匹配
+                        tryWord = tryWord[1:]
+                    # 将匹配成功的词加入到分词列表中
+                    segList.insert(0, tryWord + '/ ')
+                    # 将匹配成功的词从待分词字符串中去除，继续循环，直到分词完成
+                    line = line[:len(line) - len(tryWord)]
+
+                writefile.write(pre_line(''.join(segList)) + '\n')
+                segList.clear()
+        finally:
+            writefile.close()
+
+
+String_Match.bmm()
