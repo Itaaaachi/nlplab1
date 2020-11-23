@@ -28,6 +28,8 @@ def init_dic():
 
 init_dic()
 
+# 处理每行信息前面的日期序号，连接
+
 
 def pre_line(line):
     punctuation = '-./'
@@ -49,6 +51,7 @@ def pre_line(line):
 
 class String_Match:
     @staticmethod
+    # 正向最大匹配
     def fmm():
         init_dic()
         segList = []
@@ -82,6 +85,7 @@ class String_Match:
             writefile.close()
 
     @staticmethod
+    # 反向最大匹配
     def bmm():
         init_dic()
         segList = []
@@ -116,5 +120,5 @@ class String_Match:
         finally:
             writefile.close()
 
-
+String_Match.fmm()
 String_Match.bmm()
