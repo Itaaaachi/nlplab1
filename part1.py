@@ -1,4 +1,7 @@
+#输入路径
 Train_Path = 'text/199801_seg&pos.txt'
+
+#输出路径
 Dic_Path = 'text/dic.txt'
 
 

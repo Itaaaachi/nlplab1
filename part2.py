@@ -1,11 +1,14 @@
-MaxLen = 0
-Words = []
-dic = []
+#输入路径
 Sent_Path = 'text/199801_sent.txt'
 Dic_Path = 'text/dic.txt'
+
+#输出路径
 FMM_Path = 'text/seg_FMM.txt'
 BMM_Path = 'text/seg_BMM.txt'
 
+MaxLen = 0
+Words = []
+dic = []
 
 def init_dic():
     global MaxLen
