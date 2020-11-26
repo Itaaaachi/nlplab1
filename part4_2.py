@@ -137,11 +137,10 @@ def search_fmm_trie(trie):
                 line = line[len(tryWord):]
                 segList.append(tryWord + '/ ')
             segList.append('\n')
-            print(segList)
+            # print(segList)
             writefile.write(''.join(segList))
     finally:
-        # writefile.close()
-        a = 1
+        print("分词结束！")
 
 
 
