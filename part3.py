@@ -1,5 +1,5 @@
 #输入路径
-FMM_Path = 'text/seg_FMM.txt'
+FMM_Path = 'text/seg_FMM_2.txt'
 BMM_Path = 'text/seg_BMM.txt'
 Original_path = 'text/199801_seg&pos.txt'
 
@@ -11,7 +11,7 @@ def unified(para):
         path = 'text/199801_seg&pos.txt'
         encoding = 'gbk'
     elif para == 2:
-        path = 'text/seg_FMM.txt'
+        path = 'text/seg_FMM_2.txt'
         encoding = 'utf-8'
     elif para == 3:
         path = 'text/seg_BMM.txt'

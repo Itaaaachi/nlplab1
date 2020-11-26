@@ -1,4 +1,5 @@
 import time
+import re
 
 # 输入路径
 File_Path = 'text/199801_sent.txt'
@@ -107,7 +108,7 @@ def set_fmm_trie():
 # 从Trie中搜索
 def search_fmm_trie(trie):
     MaxLen = 11
-    segList = []
+
     readfile = open(File_Path, 'r', encoding='gbk')
     try:
         lines = readfile.readlines()  # 读取Sent.txt
@@ -116,6 +117,14 @@ def search_fmm_trie(trie):
     writefile = open(FMM_Path_2, 'w', encoding='utf-8')
     try:
         for line in lines:
+            segList = []
+            # 正则表达式
+            t = re.search(r'\d{8}-\d{2}-\d{3}-\d{3}', line)
+            if not t == None:
+                temp = t.span()
+                segList.append(line[temp[0]:temp[1]] + "/  ")
+                line = line[temp[1]:len(line)]
+
             line = line[:-1]
             while len(line) > 0:
                 tryWord = line if len(line) < MaxLen else line[:MaxLen]
@@ -128,33 +137,18 @@ def search_fmm_trie(trie):
                 line = line[len(tryWord):]
                 segList.append(tryWord + '/ ')
             segList.append('\n')
-        print(segList)
-        writefile.write(pre_line(''.join(segList)))
+            print(segList)
+            writefile.write(''.join(segList))
     finally:
-        writefile.close()
+        # writefile.close()
+        a = 1
 
 
-def pre_line(line):
-    punctuation = '-./'
-    buffer, result = '', ''
-    word_list = line.split('/ ')
-    word_list = word_list[:len(word_list) - 1]
-    for idx, word in enumerate(word_list):
-        if word.isascii() or word in punctuation:  # 若是字母、数字或者英文标点
-            buffer += word
-            if idx + 1 == len(word_list):
-                result += buffer + '/ '
-        else:
-            if buffer:
-                result += buffer + '/ '
-                buffer = ''
-            result += word + '/ '
-    return result
 
 
 trie = set_fmm_trie()
 print("词典")
-startTime=time.time()
+startTime = time.time()
 search_fmm_trie(trie)
-endTime=time.time()
-print ('运行时间'+str(endTime-startTime))
+endTime = time.time()
+print('运行时间' + str(endTime - startTime))

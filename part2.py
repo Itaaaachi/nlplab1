@@ -1,3 +1,5 @@
+import time
+
 #输入路径
 Sent_Path = 'text/199801_sent.txt'
 Dic_Path = 'text/dic.txt'
@@ -123,5 +125,10 @@ class String_Match:
         finally:
             writefile.close()
 
+
+startTime=time.time()
 String_Match.fmm()
-String_Match.bmm()
+endTime=time.time()
+print ('运行时间'+str(endTime-startTime))
+
+# String_Match.bmm()
