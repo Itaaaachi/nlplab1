@@ -26,12 +26,12 @@ def init_dic():
         Words.append(word[0:len(word) - 1])  # 将该词加入词典列表中
         if len(word) - 1 > MaxLen:  # 更新最大词长
             MaxLen = len(word) - 1
-        if len(word) > 11:
-            print(word)
-    print(MaxLen)
+        # if len(word) > 11:
+        #     print(word)
+    # print(MaxLen)
 
 
-init_dic()
+# init_dic()
 
 # 处理每行信息前面的日期序号，连接
 
@@ -126,9 +126,9 @@ class String_Match:
             writefile.close()
 
 
-startTime=time.time()
+# startTime=time.time()
 String_Match.fmm()
-endTime=time.time()
-print ('运行时间'+str(endTime-startTime))
+# endTime=time.time()
+# print ('运行时间'+str(endTime-startTime))
 
 # String_Match.bmm()

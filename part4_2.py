@@ -1,5 +1,6 @@
 import time
 import re
+from nlplab1 import part2
 
 # 输入路径
 File_Path = 'text/199801_sent.txt'
@@ -134,7 +135,9 @@ def search_fmm_trie(trie):
                         break
                     tryWord = tryWord[:-1]
                     p = search(tryWord, trie)
+                # 将匹配成功的词从待分词字符串中去除，继续循环，直到分词完成
                 line = line[len(tryWord):]
+                # 将匹配成功的词加入到分词列表中
                 segList.append(tryWord + '/ ')
             segList.append('\n')
             # print(segList)
@@ -146,8 +149,19 @@ def search_fmm_trie(trie):
 
 
 trie = set_fmm_trie()
-print("词典")
+# print("词典")
+
 startTime = time.time()
 search_fmm_trie(trie)
 endTime = time.time()
-print('运行时间' + str(endTime - startTime))
+time_trie=endTime-startTime
+# print('运行时间' + str(endTime - startTime))
+
+startTime2 = time.time()
+part2.String_Match.fmm()
+endTime2 = time.time()
+time_origin=endTime2-startTime2
+
+writefile = open(Result_Path, 'a+', encoding='UTF-8')
+writefile.write("trie树优化后的运行时间为"+str(time_trie)+"\n")
+writefile.write("原来的运行时间为"+str(time_origin)+"\n")
