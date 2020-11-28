@@ -1,10 +1,7 @@
-# 输入路径
-FMM_Path = 'text/seg_FMM.txt'
-BMM_Path = 'text/seg_BMM.txt'
-Original_path = 'text/199801_seg&pos.txt'
-
-# 输出路径
 Score_Path = 'text/score.txt'
+Original_Path = 'text/199801_seg&pos.txt'
+Fmm_Path = 'text/seg_FMM.txt'
+Bmm_Path = 'text/seg_BMM.txt'
 
 
 def unified(para):
@@ -16,6 +13,9 @@ def unified(para):
         encoding = 'utf-8'
     elif para == 3:
         path = 'text/seg_BMM.txt'
+        encoding = 'utf-8'
+    elif para == 4:
+        path = 'text/seg_LM.txt'
         encoding = 'utf-8'
     readfile = open(path, 'r', encoding=encoding)
     result = []
@@ -85,6 +85,9 @@ def score(para):
     elif para == 3:
         print("BMM结果为：")
         print("BMM词数：" + str(mm))
+    elif para == 4:
+        print("二元分词结果为：")
+        print("LM词数：" + str(mm))
     print("正确词数：" + str(right))
     print("准确率：" + str(p * 100) + "%")
     print("召回率：" + str(r * 100) + "%")
@@ -97,12 +100,11 @@ def score(para):
     elif para == 3:
         writefile.write("BMM结果为：\n")
         writefile.write("BMM词数：" + str(mm) + "\n")
+    elif para == 4:
+        writefile.write("二元分词结果为：\n")
+        writefile.write("LM词数：" + str(mm) + "\n")
     writefile.write("标准词库词数：" + str(standard) + "\n")
     writefile.write("正确词数：" + str(right) + "\n")
     writefile.write("准确率：" + str(p * 100) + "%\n")
     writefile.write("召回率：" + str(r * 100) + "%\n")
-    writefile.write("F值：" + str(f * 100) + "%\n")
-
-
-score(2)
-score(3)
+    writefile.write("F值：" + str(f * 100) + "%\n\n")
