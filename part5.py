@@ -1,5 +1,5 @@
 from math import log
-import part3
+from nlplab1 import part3
 
 # 输入路径
 Sent_Path = 'text/199801_sent.txt'
