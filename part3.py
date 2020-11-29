@@ -2,11 +2,12 @@ Score_Path = 'text/score.txt'
 Original_Path = 'text/199801_seg&pos.txt'
 Fmm_Path = 'text/seg_FMM.txt'
 Bmm_Path = 'text/seg_BMM.txt'
+Standard_Path = 'text/standard.txt'  # part5为standard.txt 其他part为199801_seg&pos.txt
 
 
 def unified(para):
     if para == 1:
-        path = 'text/199801_seg&pos.txt'
+        path = Standard_Path
         encoding = 'gbk'
     elif para == 2:
         path = 'text/seg_FMM.txt'
@@ -15,6 +16,9 @@ def unified(para):
         path = 'text/seg_BMM.txt'
         encoding = 'utf-8'
     elif para == 4:
+        path = 'text/seg_LM.txt'
+        encoding = 'utf-8'
+    elif para == 5:
         path = 'text/seg_LM.txt'
         encoding = 'utf-8'
     readfile = open(path, 'r', encoding=encoding)
@@ -88,6 +92,9 @@ def score(para):
     elif para == 4:
         print("二元分词结果为：")
         print("LM词数：" + str(mm))
+    elif para == 5:
+        print("使用HMM识别未登录词的二元分词结果为：")
+        print("LM词数：" + str(mm))
     print("正确词数：" + str(right))
     print("准确率：" + str(p * 100) + "%")
     print("召回率：" + str(r * 100) + "%")
@@ -102,6 +109,9 @@ def score(para):
         writefile.write("BMM词数：" + str(mm) + "\n")
     elif para == 4:
         writefile.write("二元分词结果为：\n")
+        writefile.write("LM词数：" + str(mm) + "\n")
+    elif para == 5:
+        writefile.write("使用HMM识别未登录词的二元分词结果为：\n")
         writefile.write("LM词数：" + str(mm) + "\n")
     writefile.write("标准词库词数：" + str(standard) + "\n")
     writefile.write("正确词数：" + str(right) + "\n")
