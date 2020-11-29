@@ -1,4 +1,6 @@
 import time
+import re
+from nlplab1 import part2
 
 # 输入路径
 File_Path = 'text/199801_sent.txt'
@@ -95,7 +97,7 @@ def set_fmm_trie():
     try:
         b = file.read()  # 读取词典
     finally:
-        file.close()
+        file.close()  
     # 将词典转化为list
     dic = b.split('\n')
     trie = TrieNode("")
@@ -107,7 +109,7 @@ def set_fmm_trie():
 # 从Trie中搜索
 def search_fmm_trie(trie):
     MaxLen = 11
-    segList = []
+
     readfile = open(File_Path, 'r', encoding='gbk')
     try:
         lines = readfile.readlines()  # 读取Sent.txt
@@ -116,6 +118,14 @@ def search_fmm_trie(trie):
     writefile = open(FMM_Path_2, 'w', encoding='utf-8')
     try:
         for line in lines:
+            segList = []
+            # 正则表达式
+            t = re.search(r'\d{8}-\d{2}-\d{3}-\d{3}', line)
+            if not t == None:
+                temp = t.span()
+                segList.append(line[temp[0]:temp[1]] + "/  ")
+                line = line[temp[1]:len(line)]
+
             line = line[:-1]
             while len(line) > 0:
                 tryWord = line if len(line) < MaxLen else line[:MaxLen]
@@ -125,36 +135,33 @@ def search_fmm_trie(trie):
                         break
                     tryWord = tryWord[:-1]
                     p = search(tryWord, trie)
+                # 将匹配成功的词从待分词字符串中去除，继续循环，直到分词完成
                 line = line[len(tryWord):]
+                # 将匹配成功的词加入到分词列表中
                 segList.append(tryWord + '/ ')
             segList.append('\n')
-        print(segList)
-        writefile.write(pre_line(''.join(segList)))
+            # print(segList)
+            writefile.write(''.join(segList))
     finally:
-        writefile.close()
+        print("分词结束！")
 
 
-def pre_line(line):
-    punctuation = '-./'
-    buffer, result = '', ''
-    word_list = line.split('/ ')
-    word_list = word_list[:len(word_list) - 1]
-    for idx, word in enumerate(word_list):
-        if word.isascii() or word in punctuation:  # 若是字母、数字或者英文标点
-            buffer += word
-            if idx + 1 == len(word_list):
-                result += buffer + '/ '
-        else:
-            if buffer:
-                result += buffer + '/ '
-                buffer = ''
-            result += word + '/ '
-    return result
 
 
 trie = set_fmm_trie()
-print("词典")
-startTime=time.time()
+# print("词典")
+
+startTime = time.time()
 search_fmm_trie(trie)
-endTime=time.time()
-print ('运行时间'+str(endTime-startTime))
+endTime = time.time()
+time_trie=endTime-startTime
+# print('运行时间' + str(endTime - startTime))
+
+startTime2 = time.time()
+part2.String_Match.fmm()
+endTime2 = time.time()
+time_origin=endTime2-startTime2
+
+writefile = open(Result_Path, 'a+', encoding='UTF-8')
+writefile.write("trie树优化后的运行时间为"+str(time_trie)+"\n")
+writefile.write("原来的运行时间为"+str(time_origin)+"\n")
